@@ -1,0 +1,24 @@
+#!/bin/bash -eu
+
+if [ "$#" -gt 1 ]
+then
+  echo "usage: $0 [conf-dir]" >&2
+  exit 1
+fi
+
+PWD="$(pwd)"
+WHEREAMI="$(dirname "$0")"
+
+if [ "$#" -lt 1 ] || [ "x$1" = "x" ]
+then
+  CONFDIR="$WHEREAMI"/../conf
+else
+  CONFDIR="$1"
+fi
+
+CONFDIR="$(cd "$CONFDIR" && pwd)"
+WHEREAMI="$(cd "$WHEREAMI" && pwd)"
+
+
+cd "$WHEREAMI/.."
+exec node "$WHEREAMI"/../dist/bin/pivot  -c "$CONFDIR"/config.yaml

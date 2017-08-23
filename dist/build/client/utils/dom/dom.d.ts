@@ -1,0 +1,13 @@
+export declare function isInside(child: Element, parent: Element): boolean;
+export declare function findParentWithClass(child: Element, className: string): Element;
+export declare function setDragGhost(dataTransfer: DataTransfer, text: string): void;
+export declare function enterKey(e: KeyboardEvent): boolean;
+export declare function escapeKey(e: KeyboardEvent): boolean;
+export declare function uniqueId(prefix: string): string;
+export declare function transformStyle(x: number, y: number): any;
+export declare function getXFromEvent(e: MouseEvent | DragEvent): number;
+export declare function getYFromEvent(e: MouseEvent | DragEvent): number;
+export declare function roundToPx(n: number): number;
+export declare function roundToHalfPx(n: number): number;
+export declare function clamp(n: number, min: number, max: number): number;
+export declare function classNames(...args: Array<string | Lookup<any>>): string;

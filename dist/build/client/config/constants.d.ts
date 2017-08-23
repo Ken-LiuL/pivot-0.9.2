@@ -1,0 +1,18 @@
+import { Locale } from '../../common/utils/time/time';
+export declare const TITLE_HEIGHT: number;
+export declare const DIMENSION_HEIGHT: number;
+export declare const MEASURE_HEIGHT: number;
+export declare const CORE_ITEM_WIDTH: number;
+export declare const CORE_ITEM_GAP: number;
+export declare const BAR_TITLE_WIDTH: number;
+export declare const PIN_TITLE_HEIGHT: number;
+export declare const PIN_ITEM_HEIGHT: number;
+export declare const PIN_PADDING_BOTTOM: number;
+export declare const VIS_H_PADDING: number;
+export declare const VIS_SELECTOR_WIDTH: number;
+export declare const OVERFLOW_WIDTH: number;
+export declare const SPLIT: string;
+export declare const MAX_SEARCH_LENGTH: number;
+export declare const SEARCH_WAIT: number;
+export declare const STRINGS: any;
+export declare function getLocale(): Locale;

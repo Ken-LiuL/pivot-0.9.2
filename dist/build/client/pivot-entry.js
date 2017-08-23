@@ -1,0 +1,71 @@
+"use strict";
+require('./pivot-entry.css');
+var React = require('react');
+var ReactDOM = require('react-dom');
+var error_monitor_1 = require('./utils/error-monitor/error-monitor');
+var loader_1 = require('./components/loader/loader');
+error_monitor_1.addErrorMonitor();
+var container = document.getElementsByClassName('app-container')[0];
+if (!container)
+    throw new Error('container not found');
+// Add the loader
+ReactDOM.render(React.createElement(loader_1.Loader), container);
+var config = window['__CONFIG__'];
+if (!config || !config.version || !config.appSettings || !config.appSettings.dataSources) {
+    throw new Error('config not found');
+}
+if (config.appSettings.dataSources.length) {
+    var version = config.version;
+    require.ensure([
+        'chronoshift',
+        'chronoshift/lib/walltime/walltime-data.js',
+        './utils/ajax/ajax',
+        '../common/models/index',
+        '../common/manifests/index',
+        './views/pivot-application/pivot-application'
+    ], function (require) {
+        var WallTime = require('chronoshift').WallTime;
+        var queryUrlExecutorFactory = require('./utils/ajax/ajax').queryUrlExecutorFactory;
+        var AppSettings = require('../common/models/index').AppSettings;
+        var MANIFESTS = require('../common/manifests/index').MANIFESTS;
+        var PivotApplication = require('./views/pivot-application/pivot-application').PivotApplication;
+        var appSettings = AppSettings.fromJS(config.appSettings, {
+            visualizations: MANIFESTS,
+            executorFactory: function (dataSource) {
+                return queryUrlExecutorFactory(dataSource.name, 'plywood', version);
+            }
+        });
+        // Init chronoshift
+        if (!WallTime.rules) {
+            var tzData = require('chronoshift/lib/walltime/walltime-data.js');
+            WallTime.init(tzData.rules, tzData.zones);
+        }
+        ReactDOM.render(React.createElement(PivotApplication, {
+            version: version,
+            user: config.user,
+            appSettings: appSettings,
+            readOnly: config.readOnly
+        }), container);
+    }, 'pivot-main');
+}
+else {
+    require.ensure([
+        './components/no-data-sources-application/no-data-sources-application'
+    ], function (require) {
+        var NoDataSourcesApplication = require('./components/no-data-sources-application/no-data-sources-application').NoDataSourcesApplication;
+        ReactDOM.render(React.createElement(NoDataSourcesApplication, {}), container);
+    }, 'no-data-sources');
+}
+// Polyfill
+// from https://github.com/reppners/ios-html5-drag-drop-shim/tree/effectAllowed_dropEffect
+// /polyfill/mobile-drag-and-drop-polyfill/mobile-drag-and-drop-polyfill.js
+// From ../../assets/polyfill/ios-drag-drop.js
+var div = document.createElement('div');
+var dragDiv = 'draggable' in div;
+var evts = 'ondragstart' in div && 'ondrop' in div;
+var needsPatch = !(dragDiv || evts) || /iPad|iPhone|iPod|Android/.test(navigator.userAgent);
+if (needsPatch) {
+    require.ensure(['../../lib/polyfill/ios-drag-drop.js'], function (require) {
+        require('../../lib/polyfill/ios-drag-drop.js');
+    }, 'ios-drag-drop');
+}

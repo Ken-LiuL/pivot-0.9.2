@@ -1,0 +1,1 @@
+.drop-indicator .white-out{position:absolute;top:0;bottom:0;left:0;right:0;background:#fff;opacity:.65}.drop-indicator .action{position:absolute;top:16px;bottom:16px;left:16px;right:16px;border-radius:6px;border:1px dashed #666}.drop-indicator .action svg{position:absolute;width:30px;top:50%;left:50%;margin-left:-15px;margin-top:-15px}.drop-indicator .action path{fill:#666}
