@@ -190,6 +190,7 @@ var ClusterManager = (function () {
         this.updateSourceReintrospectTimer();
     };
     ClusterManager.prototype.internalizeVersion = function (version) {
+	version="0.9.2"
         var _this = this;
         // If there is a version already do nothing
         if (this.version)
